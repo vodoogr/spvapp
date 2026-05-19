@@ -2,8 +2,8 @@
 
 ## Fase 1: base tecnica e importacion minima
 
-- Crear proyecto Next.js con TypeScript, TailwindCSS y App Router.
-- Inicializar shadcn/ui, Lucide React, ECharts, TanStack Table, React Hook Form y Zod.
+- Crear proyecto Next.js con TypeScript, Chakra UI y App Router.
+- Inicializar Chakra UI, Lucide React, Plotly, TanStack Table, React Hook Form y Zod.
 - Preparar Prisma sin migracion definitiva hasta cerrar modelo.
 - Configurar conexion NeonDB mediante variables de entorno.
 - Crear servicios base.
@@ -46,4 +46,3 @@
 4. Crear proyecto base Next.js.
 5. Crear validadores Zod de CSV.
 6. Implementar importacion de incidencias y salidas generales.
-

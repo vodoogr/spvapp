@@ -36,9 +36,8 @@ Frontend:
 - Next.js
 - React
 - TypeScript
-- TailwindCSS
-- shadcn/ui
-- ECharts para gráficos
+- Chakra UI
+- Plotly para gráficos
 - Lucide React para iconos
 - TanStack Table para tablas avanzadas
 - React Hook Form
@@ -437,7 +436,7 @@ Cards KPI:
 - Media de días abiertas
 - Incidencias críticas
 
-Gráficos ECharts:
+Gráficos Plotly:
 
 - Donut: abiertas vs finalizadas.
 - Barras: incidencias por tienda.
@@ -517,7 +516,7 @@ Responsabilidades:
 
 - Calcular KPIs.
 - Consultar agregados.
-- Preparar datos para ECharts.
+- Preparar datos para Plotly.
 
 ### reportService
 
@@ -693,5 +692,4 @@ El MVP se considera correcto si permite:
 7. Generar informes básicos.
 8. Calcular ratios incidencias/salidas.
 9. Detectar datos no cruzados.
-10. Mostrar gráficos ECharts útiles para dirección.
-
+10. Mostrar gráficos Plotly útiles para dirección.

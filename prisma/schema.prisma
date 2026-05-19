@@ -1,0 +1,267 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  direccion
+  coordinador_postventa
+  importador
+  consulta
+}
+
+enum ImportType {
+  general_deliveries
+  supplier_deliveries
+  incidents
+  seller_deliveries
+  installer_deliveries
+}
+
+enum ImportStatus {
+  pending
+  validating
+  imported
+  failed
+}
+
+enum ResolutionStatus {
+  open
+  resolved
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      UserRole @default(consulta)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  importBatches ImportBatch[]
+}
+
+model ImportBatch {
+  id          String       @id @default(cuid())
+  type        ImportType
+  fileName    String
+  status      ImportStatus @default(pending)
+  totalRows   Int          @default(0)
+  validRows   Int          @default(0)
+  invalidRows Int          @default(0)
+  createdAt   DateTime     @default(now())
+  startedAt   DateTime?
+  finishedAt  DateTime?
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+
+  issues     ImportRowIssue[]
+  incidents  Incident[]
+  deliveries Delivery[]
+
+  @@index([type, status])
+  @@index([createdAt])
+}
+
+model ImportRowIssue {
+  id        String   @id @default(cuid())
+  rowNumber Int
+  column    String?
+  code      String
+  message   String
+  severity  String
+  createdAt DateTime @default(now())
+
+  importBatchId String
+  importBatch   ImportBatch @relation(fields: [importBatchId], references: [id], onDelete: Cascade)
+
+  @@index([importBatchId])
+  @@index([severity])
+}
+
+model Store {
+  id        String   @id @default(cuid())
+  code      String?  @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  incidents Incident[]
+  deliveries Delivery[]
+  coordinatorRules CoordinatorAssignmentRule[]
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  code      String?  @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  incidents Incident[]
+  deliveries Delivery[]
+  coordinatorRules CoordinatorAssignmentRule[]
+}
+
+model Brand {
+  id        String   @id @default(cuid())
+  code      String?  @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  incidents Incident[]
+  deliveries Delivery[]
+  coordinatorRules CoordinatorAssignmentRule[]
+}
+
+model Seller {
+  id        String   @id @default(cuid())
+  code      String?  @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  incidents Incident[]
+  deliveries Delivery[]
+}
+
+model Installer {
+  id        String   @id @default(cuid())
+  code      String?  @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deliveries Delivery[]
+}
+
+model Coordinator {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  incidents Incident[]
+  rules CoordinatorAssignmentRule[]
+}
+
+model CoordinatorAssignmentRule {
+  id           String  @id @default(cuid())
+  priority     Int     @default(100)
+  active       Boolean @default(true)
+  incidentType String?
+  severity     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  coordinatorId String
+  coordinator   Coordinator @relation(fields: [coordinatorId], references: [id])
+
+  storeId    String?
+  store      Store?    @relation(fields: [storeId], references: [id])
+  supplierId String?
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  brandId    String?
+  brand      Brand?    @relation(fields: [brandId], references: [id])
+
+  @@index([active, priority])
+  @@index([storeId, supplierId, brandId])
+}
+
+model Incident {
+  id                 String           @id @default(cuid())
+  sourceNumber       String?
+  resolvedFlag       String
+  resolutionStatus   ResolutionStatus
+  incidentDate       DateTime?
+  resolvedDate       DateTime?
+  incidentType       String?
+  severity           String?
+  deliveryKeyPartial String?
+  unmatchedDelivery  Boolean          @default(false)
+  associatedExpenses Decimal?         @db.Decimal(12, 2)
+  cost               Decimal?         @db.Decimal(12, 2)
+  rawPayload         Json?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  importBatchId String?
+  importBatch   ImportBatch? @relation(fields: [importBatchId], references: [id])
+
+  storeId       String?
+  store         Store?       @relation(fields: [storeId], references: [id])
+  supplierId    String?
+  supplier      Supplier?    @relation(fields: [supplierId], references: [id])
+  brandId       String?
+  brand         Brand?       @relation(fields: [brandId], references: [id])
+  sellerId      String?
+  seller        Seller?      @relation(fields: [sellerId], references: [id])
+  coordinatorId String?
+  coordinator   Coordinator? @relation(fields: [coordinatorId], references: [id])
+
+  @@index([resolutionStatus])
+  @@index([incidentDate])
+  @@index([storeId])
+  @@index([supplierId])
+  @@index([brandId])
+  @@index([sellerId])
+  @@index([coordinatorId])
+  @@index([deliveryKeyPartial])
+  @@index([unmatchedDelivery])
+}
+
+model Delivery {
+  id           String     @id @default(cuid())
+  deliveryKey  String
+  sourceType   ImportType
+  company      String?
+  fiscalYear   String?
+  series       String?
+  number       String?
+  lineNumber   String?
+  deliveryDate DateTime?
+  quantity     Decimal?   @db.Decimal(12, 3)
+  amount       Decimal?   @db.Decimal(12, 2)
+  rawPayload   Json?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  importBatchId String?
+  importBatch   ImportBatch? @relation(fields: [importBatchId], references: [id])
+
+  storeId     String?
+  store       Store?     @relation(fields: [storeId], references: [id])
+  supplierId  String?
+  supplier    Supplier?  @relation(fields: [supplierId], references: [id])
+  brandId     String?
+  brand       Brand?     @relation(fields: [brandId], references: [id])
+  sellerId    String?
+  seller      Seller?    @relation(fields: [sellerId], references: [id])
+  installerId String?
+  installer   Installer? @relation(fields: [installerId], references: [id])
+
+  @@index([deliveryKey])
+  @@index([sourceType])
+  @@index([deliveryDate])
+  @@index([storeId])
+  @@index([supplierId])
+  @@index([brandId])
+  @@index([sellerId])
+  @@index([installerId])
+}
+

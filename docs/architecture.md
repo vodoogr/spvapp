@@ -121,7 +121,7 @@ Usar Route Handlers para subidas CSV, validaciones de lotes, exportaciones y end
 - `KpiCard`
 - `KpiGrid`
 - `ChartCard`
-- `EChartClient`
+- `PlotlyClient`
 - `IncidentStatusDonut`
 - `IncidentsByStoreChart`
 - `SupplierRankingChart`
@@ -142,8 +142,7 @@ Usar Route Handlers para subidas CSV, validaciones de lotes, exportaciones y end
 
 ## Decisiones de renderizado
 
-- Paginas de dashboard e informes: Server Components con datos agregados y pequenos componentes cliente para graficos ECharts.
+- Paginas de dashboard e informes: Server Components con datos agregados y pequenos componentes cliente para graficos Plotly.
 - Tablas grandes: Server Components para carga inicial y controles cliente para filtros, orden y paginacion.
 - Cargas CSV: componente cliente para seleccion/feedback y Route Handler para procesamiento.
 - Configuracion de coordinadores: formularios con React Hook Form, Zod y Server Actions.
-

@@ -6,7 +6,7 @@ Esta carpeta alojara la logica de negocio desacoplada de React.
 
 - `importService.ts`: recibe CSV, detecta tipo, parsea, crea lote, valida y coordina persistencia.
 - `normalizationService.ts`: normaliza tiendas, proveedores, marcas, vendedores y montadores.
-- `dashboardService.ts`: calcula KPIs, agregados y payloads para ECharts.
+- `dashboardService.ts`: calcula KPIs, agregados y payloads para Plotly.
 - `reportService.ts`: construye informes dinamicos, filtros, agrupaciones y futuras exportaciones.
 - `coordinatorAssignmentService.ts`: aplica reglas activas por prioridad para asignar coordinador.
 - `csvValidationService.ts`: valida cabeceras, tipos, fechas, importes y duplicados.
@@ -21,4 +21,3 @@ Esta carpeta alojara la logica de negocio desacoplada de React.
 ## Regla de arquitectura
 
 Los componentes React no deben contener reglas de negocio. Deben invocar Server Components, Server Actions o Route Handlers, y estos delegaran en servicios.
-

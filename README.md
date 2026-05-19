@@ -15,12 +15,14 @@ El proyecto esta planteado como una aplicacion interna profesional, con arquitec
 - Next.js
 - React
 - TypeScript
-- TailwindCSS
-- shadcn/ui
-- ECharts
+- Chakra UI
+- Plotly
 - TanStack Table
 - React Hook Form
 - Zod
 - Prisma ORM
 - NeonDB PostgreSQL
 
+## Experiencia de usuario
+
+La interfaz usa Chakra UI con modo claro/oscuro y una direccion visual predominantemente azul. Los graficos se renderizan con Plotly para facilitar analitica interactiva y evolucion futura de informes.
