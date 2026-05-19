@@ -63,6 +63,7 @@ export const modules = [
   { title: "Incidencias", href: "/incidencias" },
   { title: "Informes", href: "/informes" },
   { title: "Cargas CSV", href: "/cargas-csv" },
+  { title: "Calidad de datos", href: "/calidad-datos" },
   { title: "Coordinadores", href: "/coordinadores" },
   { title: "Proveedores", href: "/catalogos/proveedores" },
   { title: "Marcas", href: "/catalogos/marcas" },
@@ -71,4 +72,3 @@ export const modules = [
   { title: "Montadores", href: "/catalogos/montadores" },
   { title: "Configuracion", href: "/configuracion" },
 ];
-

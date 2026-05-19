@@ -9,6 +9,7 @@ import {
   Factory,
   FileText,
   Settings,
+  Link2Off,
   Store,
   Truck,
   UploadCloud,
@@ -17,7 +18,20 @@ import {
 import { modules } from "@/data/demo";
 import { ColorModeToggle } from "@/components/theme/color-mode-toggle";
 
-const icons = [BarChart3, ClipboardList, FileText, UploadCloud, UserRound, Factory, Factory, Store, UserRound, Truck, Settings];
+const icons = [
+  BarChart3,
+  ClipboardList,
+  FileText,
+  UploadCloud,
+  Link2Off,
+  UserRound,
+  Factory,
+  Factory,
+  Store,
+  UserRound,
+  Truck,
+  Settings,
+];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
